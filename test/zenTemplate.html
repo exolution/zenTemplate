@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="zenTemplate.min.js"></script>
+
+</head>
+<body>
+<div >
+
+    <p>
+    zenCoding Parser
+    </p>
+    <p>
+
+    此解析器可以解析zenCoding风格代码 生成HTML。zenCoding是一种类CSS语法来描述HTML结构。并支持迭代功能<br/>
+    简单语法介绍<br/>
+    A>B A标签包含B标签（B标签是A的子节点）<br/>
+    A+B B标签是A标签为兄弟节点<br/>
+    #id描述 .class描述<br/>
+    *n 前面标签重复n次<br/>
+    %number%或者%c% 根据重复次数迭代递增 如果为数字则数字加以 如果为字母则字母升序 A->B<br/>
+    @xxx一个文本节点 值为XXX<br/>
+    可以用()决定优先级即层次关系
+    </p>
+    <!--我知道我这个页面的HTML写的很屎，真心懒得整了，还请宽恕则个O(∩_∩)O-->
+    如遇BUG 请将本页截图发至我的邮箱 tanhawk@163.com
+    或者到我的github上直接edit那个buglist.txt
+    在此表示感谢
+</div>
+<textarea name="a" id="ta" cols="90" rows="3">
+(div#nav>ul>li*4>a[href=http://www.baidu.com,style=color:#F0F]>@百度%1%)+div.footer>@foot+br+textarea>@abc
+</textarea><br>
+<button id="btn">生成</button><br>
+<div id="error" ></div>
+<div id="stack" ></div>
+<textarea name="a" id="content" cols="90" rows="20"></textarea>
+<div id="div" ></div>
+<script type="text/javascript">
+
+    document.getElementById('btn').onclick=function(){
+
+    try{
+        document.getElementById('error').innerHTML='';
+        document.getElementById('stack').innerText='';
+        zenTemplate.inspectSyntax(document.getElementById('ta').value);
+        zenTemplate.enableIndent(true);
+        var html=zenTemplate.parse(document.getElementById('ta').value);
+        document.getElementById('content').value=html||"";
+        document.getElementById('div').innerHTML=html||"";
+    }catch (e){
+
+        document.getElementById('content').value='';
+        document.getElementById('div').innerText='';
+        var code=document.getElementById('ta').value;
+        if(!e.idx){
+            throw e;
+        }
+        var t=code.substring(0, e.idx)+'<b style="color:#f00;">'+ code.charAt(e.idx)+'</b>'+ code.substr(e.idx+1);
+        document.getElementById('error').innerHTML= '<b style="color:#f00;">'+(e.message|| e.description)+"</b><p>code:</p><p>"+ t+'</p>';
+
+    }
+    }
+</script>
+</body>
+</html>
