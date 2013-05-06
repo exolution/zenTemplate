@@ -16,6 +16,11 @@ var zenTemplate = function (window, undefined) {
         VALUE: 7, /*值（文本）节点开始*/
         COMPLETE: 8/*完成（实际指括号结束）*/
     };
+    try{
+        console.log('zenTemplate v0.5!');
+    }catch(e){
+        console={log:function(){}};
+    }
     //判断是否是不用关闭的标签
     var nv = "area|base|basefont|bgsound|br|col|frame|hr|img|input|isindex|link|meta|param|embed|wbr".split('|');
     var noclose = {};
